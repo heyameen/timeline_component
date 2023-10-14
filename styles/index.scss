@@ -1,0 +1,21 @@
+:root {
+  --background-modal-color: #fff;
+  --body-color: #fff;
+  --color-timeline-default: #D2D3D8;
+  --color-event-completed: #5C6174;
+  --color-checkmark-completed: #fff;
+  --color-in-progress: #13CB8F;
+  --color-label-default: var(--color-timeline-default);
+  --color-label-completed: var(--color-step-completed);
+  --color-label-loading: var(--color-in-progress);
+  --color-icon-completed: var(--color-step-completed);
+  --color-icon-default: var(--color-timeline-default);
+  &.dark-mode {
+     --color-checkmark-completed: #fff;
+    --background-modal-color: #5C6174;
+    --color-timeline-default: #9799A3;
+    --color-checkmark-completed: var(--background-modal-color);
+    --body-color: #fff;
+    --color-step-completed: #fff;
+  }
+}

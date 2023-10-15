@@ -9,12 +9,12 @@ import "@/styles/index.scss"
 
 export default function Home() {
   const [events, setEvents] = useState([
-    { description: 'Event 1', completed: false },
-    { description: 'Event 2', completed: false },
-    { description: 'Event 3', completed: false },
-    { description: 'Event 4cxcccx', completed: false },
-    { description: 'Event 5', completed: false },
-    { description: 'Event 6', completed: false },
+    { name:'Test Event 1', description: 'Event 1', completed: false },
+    { name: 'Test Event 2', description: 'Event 2', completed: false },
+    { name: 'Test Event 3', description: 'Event 3 ffdddddddd dddddddddddd dddddddddd sddffff', completed: false },
+    { name: 'Test Event 4', description: 'Event 4cxcccx', completed: false },
+    { name: 'Test Event 5', description: 'Event 5', completed: false },
+    { name: 'Test Event 6', description: 'Event 6', completed: false },
   ]);
 
   const toggleEvent = (index: number) => {
@@ -23,10 +23,16 @@ export default function Home() {
     setEvents(newEvents);
   };
 
+  const changeEventDescription = (description: string, index: number) => {
+    const newEvents = [...events];
+    newEvents[index].description = description;
+    setEvents(newEvents);
+  }
+
 
   return (
     <main className={styles.main}>
-      <Timeline events={events} toggleEvent={toggleEvent} />
+      <Timeline events={events} toggleEvent={toggleEvent} changeEventDescription={changeEventDescription} />
       {/* <TimelineBuilder events={events} updateEvents={setEvents} /> */}
     </main>
   )

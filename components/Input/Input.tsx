@@ -13,8 +13,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         <input
             type={type}
             className={
-                disabled && 'opacity-75',
-                className
+                `${disabled} && 'opacity-75',
+                ${className}`
             }
             disabled={disabled}
             ref={ref}

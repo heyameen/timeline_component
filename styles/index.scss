@@ -1,15 +1,18 @@
+@import "../components/Timeline/Timeline.module.scss";
+
 :root {
   --background-modal-color: #fff;
   --body-color: #fff;
   --color-timeline-default: #D2D3D8;
   --color-event-completed: #5C6174;
-  --color-checkmark-completed: #fff;
+  --color-checkmark-completed: #13cB8F;
   --color-in-progress: #13CB8F;
   --color-label-default: var(--color-timeline-default);
   --color-label-completed: var(--color-step-completed);
   --color-label-loading: var(--color-in-progress);
   --color-icon-completed: var(--color-step-completed);
   --color-icon-default: var(--color-timeline-default);
+  --color-event: #1e1f22;
   &.dark-mode {
      --color-checkmark-completed: #fff;
     --background-modal-color: #5C6174;
@@ -18,4 +21,33 @@
     --body-color: #fff;
     --color-step-completed: #fff;
   }
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: #111;
+  font-family: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace; 
+  margin: 0;
+  padding: 0;
+}
+
+body::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+input {
+  font-family:inherit;
 }

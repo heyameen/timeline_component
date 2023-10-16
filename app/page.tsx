@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 
 import styles from './page.module.css'
 import Timeline from '@/components/Timeline/Timeline'
-import TimelineBuilder from '@/components/TimelineBuilder/TimelineBuilder';
 import "@/styles/index.scss"
+
 
 export default function Home() {
   const [events, setEvents] = useState([
@@ -28,12 +28,12 @@ export default function Home() {
     newEvents[index].description = description;
     setEvents(newEvents);
   }
-
+  
+  
 
   return (
     <main className={styles.main}>
-      <Timeline events={events} toggleEvent={toggleEvent} changeEventDescription={changeEventDescription} />
-      {/* <TimelineBuilder events={events} updateEvents={setEvents} /> */}
+          <Timeline events={events} toggleEvent={toggleEvent} changeEventDescription={changeEventDescription} setEvents={setEvents}/>
     </main>
   )
 }

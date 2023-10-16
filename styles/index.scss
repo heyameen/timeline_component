@@ -7,19 +7,14 @@
   --color-event-completed: #5C6174;
   --color-checkmark-completed: #13cB8F;
   --color-in-progress: #13CB8F;
-  --color-label-default: var(--color-timeline-default);
-  --color-label-completed: var(--color-step-completed);
-  --color-label-loading: var(--color-in-progress);
-  --color-icon-completed: var(--color-step-completed);
-  --color-icon-default: var(--color-timeline-default);
   --color-event: #1e1f22;
+  --color-button-cancel: #f54966;
   &.dark-mode {
      --color-checkmark-completed: #fff;
     --background-modal-color: #5C6174;
     --color-timeline-default: #9799A3;
     --color-checkmark-completed: var(--background-modal-color);
-    --body-color: #fff;
-    --color-step-completed: #fff;
+    --body-color: #fff;    
   }
 }
 
@@ -48,6 +43,6 @@ body::-webkit-scrollbar-thumb {
   outline: 1px solid slategrey;
 }
 
-input {
+input, button {
   font-family:inherit;
 }

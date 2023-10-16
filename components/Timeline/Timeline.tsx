@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+"use client"
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './Timeline.module.scss';
-import InlineEditStyles from '../InlineEdit/InlineEdit.module.scss';
 import Input from '../Input/Input';
 import InlineEdit from './../InlineEdit/InlineEdit';
+import { CiSettings } from 'react-icons/ci';
+import { FiEdit } from 'react-icons/fi';
+import { GoTrash } from 'react-icons/go';
+import { IoMdAdd } from 'react-icons/io';
+import Modal from '../Modal/Modal';
 
 interface Event {
     name: string;
@@ -14,14 +19,17 @@ interface TimelineProps {
     events: Event[];
     toggleEvent: (index: number) => void;
     changeEventDescription: (desc: string, index: number) => void;
+    setEvents: React.Dispatch<React.SetStateAction<Event[]>>
 }
 
 
-const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDescription }) => {
-    // const [eventValue, setEventValue] = useState<string, index>()
-    console.log('Event 3 ffdddddddd dddddddddddd dddddddddd sddffff ddddddddd dddd ddffd fffg'.length)
+const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDescription, setEvents }) => {
     const [editing, setIsEditing] = useState(false)
     const [eventIndex, setEventIndex] = useState<number | null>(null)
+    const [popover, setIsPopover] = useState(false)
+    const [modal, setIsModal] = useState(false)
+    const divRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
+
 
     const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         toggleEvent(index)
@@ -31,10 +39,57 @@ const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDes
         setIsEditing(false)
     }
 
-    const makeEditable = (index: number) => {
+    const onSettingsClick = (index: number) => {
         setEventIndex(index)
-        setIsEditing(true)
+        setIsPopover(true)
     }
+
+    const closePopup = (index: number) => {
+        setIsPopover(false);
+        setIsModal(!modal)
+    }
+
+
+    const addEvent = () => {
+        const newEvents = [...events];
+        newEvents.push({ name: 'Test Event Default', description: 'Event Default', completed: false },)
+        setEvents(newEvents);
+    }
+
+    const onDeleteEvent = () => {
+        const newEvents = [...events];
+        const filteredEvents = newEvents.filter((e, i) => i !== eventIndex)
+        setEvents(filteredEvents);
+        setIsModal(!modal)
+    }    
+
+    const toggleModal = () => {
+        setIsModal(!modal)
+    }
+
+    const onEdit = () => {
+        setIsEditing(true)
+        setIsPopover(false)
+    }
+
+    const cancelEdit = () => {
+        setIsEditing(false);
+    }
+
+    useEffect(() => {
+        const handleClickOutside = (event: any) => {
+            if (divRef.current && !divRef.current.contains(event.target)) {
+                setIsPopover(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
 
     return (
         <div className={styles.container}>
@@ -64,14 +119,29 @@ const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDes
                                             />
                                         )
                                             : (
-                                                <div className={
-                                                    event.description.length > 61 ? `${styles.label} ${styles.labelLarge}` :
-                                                    event.description.length > 20 ? `${styles.label} ${styles.labelMedium}` : `${styles.label}`}
-                                                    onClick={() => makeEditable(index)}
-                                                >
-                                                    {event.description}
-                                                </div>
+                                                <>
+                                                    <div className={
+                                                        event.description.length > 61 ? `${styles.label} ${styles.labelLarge}` :
+                                                            event.description.length > 22 ? `${styles.label} ${styles.labelMedium}` : `${styles.label}`}
+                                                    >
+                                                        <div className={styles.content}>
+                                                            <CiSettings size={16} className={styles.contentIcon} onClick={() => onSettingsClick(index)} />
+                                                        </div>
+                                                        {event.description}
+                                                    </div>
+                                                </>
                                             )
+                                    }
+                                    {
+                                        eventIndex == index && popover ? (
+                                            <div className={styles.popover}>
+                                                <div className={styles.popoverIcon} ref={divRef}>
+                                                    <p>Manage Event </p>
+                                                    <FiEdit size={17} className={`${styles.editIcons} ${styles.edit}`} onClick={onEdit} />
+                                                    <GoTrash size={17} className={`${styles.editIcons} ${styles.delete}`} onClick={closePopup} />
+                                                </div>
+                                            </div>
+                                        ) : null
                                     }
 
                                 </div>
@@ -84,9 +154,37 @@ const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDes
             {
                 editing ? (
                     <div className={styles.buttonContainer}>
-                        <button className={styles.button} onClick={onSave}>save</button>
+                        <button className={`${styles.button} ${styles.edit}`} onClick={onSave}>
+                            save
+                        </button>
+                        <button className={`${styles.button} ${styles.edit}`} onClick={cancelEdit}>
+                            cancel
+                        </button>
                     </div>
-                ) : null
+                ) : (
+                    <div className={styles.buttonContainer}>
+                        <button className={`${styles.button} ${styles.edit}`} onClick={addEvent}>
+                            <IoMdAdd size={20} className={styles.icon} />
+                            <p>add event</p>
+                        </button>
+                    </div>
+                )
+            }
+            {
+                modal && <Modal
+                    content={
+                        <>
+                            <b>Remove Event</b>
+                            <p style={{ margin: "10px 0px" }}>
+                                Are you sure you want to delete this event?
+                            </p>
+                            <button style={{ marginRight: '10px', display: 'inline' }} className={styles.button} onClick={toggleModal}>Cancel</button>
+                            <button className={`${styles.button} ${styles.delete}`} onClick={onDeleteEvent}>Delete</button>
+                        </>
+                    }
+                    toggleModal={toggleModal}
+                />
+
             }
 
         </div >

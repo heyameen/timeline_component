@@ -147,7 +147,7 @@
                         
                     }
                     input:checked ~ .checkmark::after{
-                        display:block
+                        display:block                        
                     }
                 
                     .checkmark{
@@ -163,12 +163,11 @@
                         &:hover{
                             scale: 1.1
                         }
-                        &::after{
+                       
+                        &::after {
                             content: "";
                             position: absolute;
                             display: none;
-                        }
-                       &::after {
                             left: 9px;
                             top: 4px;
                             width: 5px;
@@ -178,7 +177,7 @@
                             -webkit-transform: rotate(45deg);
                             -ms-transform: rotate(45deg);
                             transform: rotate(45deg);
-                         }
+                        }
                     }
 
                 }
@@ -221,13 +220,16 @@
                     top: 60px;
                     padding: 10px;
                     background-color:var(--color-event);
-                    color: white;
                     border-radius: 0px 10px 10px 10px;
-                    max-width: 150px;
+                    max-width: 155px;
+                    min-width: 120px;
                     text-overflow: inherit;
                     white-space: wrap;
                     -moz-white-space: wrap;
                     overflow: hidden;
+                    transition: all 0.5s ease-in-out;
+                    cursor: grab;
+
 
                     @media screen and (max-width: 768px){   
                         top: 120px;                        
@@ -238,6 +240,9 @@
                     
                     &:hover{
                         cursor: pointer
+                    }
+                    &:active{
+                        cursor: grabbing;
                     }
 
                     &.completed {
@@ -255,6 +260,13 @@
                     &.labelLarge{
                         top: -180px;
                     }
+
+                    &.dragging{
+                        opacity: .5;
+                        transform: scale(.8);
+                    }
+
+
 
                                         
                     & .content{
@@ -330,6 +342,9 @@
                     margin: 0;
                     background-color: var(--body-color);
                     border-radius: 6px;
+                    z-index: 300;
+                    color: var(--color-event);
+                    border: 1px solid var(--color-event);
 
 
                     @media screen and (max-width: 768px){   
@@ -367,11 +382,13 @@
     }
 
     .buttonContainer{
-        position: absolute;
+        position: fixed;
         bottom: 5dvh;
         left: 45dvw;       
         text-align: center;   
         z-index: 150;
+        display: flex;
+        gap: 15px;
         
     }
 
@@ -382,36 +399,67 @@
     padding: 0.75rem;
     outline: none;
     border-radius: 6px;
-    color: var(--color-button-cancel);
+    color: #0A0759;
     min-width: 100px;
-    border: 1px solid var(--color-event);
+    border: 1px solid #0A0759;
     text-transform: Uppercase;
     font-weight: bold;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;    
+    transition: all 0.5s ease-in-out;
+
 
     &:hover{
-        cursor: pointer
+        cursor: pointer;
+        transform: translateY(-0.25em);
     }
 
     &.delete{
         background-color: var(--color-button-cancel);
-        color: var(--body-color);
+        color: #fff;
         border: none;
         display: inline-block;
     }
 
-    &.edit{
-        min-width: 150px;
-        background-color: var(--body-color);
-     
-
-        &:last-of-type{
-            background-color: var(--color-button-cancel);
-            color: var(--body-color);
+    &.edit{ 
+        &:only-child{
+            min-width: 80px;
+            color: #0A0759;
+            border: 1px solid #0A0759; 
+            border-radius: 1rem;
+            
+            &:hover{
+                background: rgb(242, 242, 253);
+                
+            }
+            @media screen and (max-width: 768px){   
+                background: rgb(242, 242, 253);                        
+            }
         }
+        
+        &:not(:only-child){
+            min-width: 80px;
+            color: #0A0759;
+            border: 1px solid #0A0759; 
+            border-radius: 1rem;
+            
+            &:hover{
+                background: rgb(242, 242, 253);
+                
+            }
+            @media screen and (max-width: 768px){   
+                background: rgb(242, 242, 253);                        
+            }
+                
+            &:last-of-type{
+                background-color: var(--color-button-cancel);
+                color: #fff;
+                border: none;
+                border-radius: 1rem;                
+            }
+        }        
 
         p {
             margin: 0;

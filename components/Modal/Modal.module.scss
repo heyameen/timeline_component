@@ -8,6 +8,7 @@
   top: 0;
   left: 0;
   z-index: 100;
+  color: #000;
 
   & .modal {
     position: relative;
@@ -31,8 +32,8 @@
       cursor: pointer;
       position: fixed;
       left: 63dvw;
-      top: 38dvh;
-      background: var(--background-modal-color);
+      top: 39dvh;
+      background: var(--color-button-cancel);
       width: 25px;
       height: 25px;
       border-radius: 50%;
@@ -40,6 +41,8 @@
       text-align: center;
       border: 1px solid #999;
       font-size: 20px;
+      color: white;
+      border: none;
       
       @media screen and (max-width: 768px){        
         left: 90dvw;        

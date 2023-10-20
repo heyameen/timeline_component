@@ -29,6 +29,8 @@ const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDes
     const [popover, setIsPopover] = useState(false)
     const [modal, setIsModal] = useState(false)
     const divRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
+    const [draggingItem, setDraggingItem] = useState<Event | null>(null);
+    const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
 
     const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -61,7 +63,7 @@ const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDes
         const filteredEvents = newEvents.filter((e, i) => i !== eventIndex)
         setEvents(filteredEvents);
         setIsModal(!modal)
-    }    
+    }
 
     const toggleModal = () => {
         setIsModal(!modal)
@@ -75,6 +77,34 @@ const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDes
     const cancelEdit = () => {
         setIsEditing(false);
     }
+
+    const onDragStart = (event: React.DragEvent, index: number) => {
+        setDraggingItem(events[index]);
+        setDraggingIndex(index);
+        event.dataTransfer.effectAllowed = "move";
+        event.currentTarget.classList.add(styles.dragging);
+    };
+
+    const onDragEnter = (index: number) => {
+        if (draggingIndex !== null && draggingItem) {
+            const newEvents = [...events];
+            newEvents.splice(draggingIndex, 1);
+            newEvents.splice(index, 0, draggingItem);
+
+            setEvents(newEvents);
+            setDraggingIndex(index);
+        }
+    };
+
+    const onDragEnd = (event: React.DragEvent) => {
+        event.currentTarget.classList.remove(styles.dragging);
+        setDraggingItem(null);
+        setDraggingIndex(null);
+    };
+
+    const onDragOver = (event: React.DragEvent) => {
+        event.preventDefault();
+    };
 
     useEffect(() => {
         const handleClickOutside = (event: any) => {
@@ -98,7 +128,7 @@ const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDes
                 <div className={styles.events}>
                     {
                         events.map((event, index) => (
-                            <div className={styles.eventItem} key={index}>
+                            <div className={styles.eventItem} key={index} >
                                 <div>
                                     <label className={styles.checkboxContainer}>
                                         <Input
@@ -123,6 +153,11 @@ const Timeline: React.FC<TimelineProps> = ({ events, toggleEvent, changeEventDes
                                                     <div className={
                                                         event.description.length > 61 ? `${styles.label} ${styles.labelLarge}` :
                                                             event.description.length > 22 ? `${styles.label} ${styles.labelMedium}` : `${styles.label}`}
+                                                        draggable
+                                                        onDragStart={(e) => onDragStart(e, index)}
+                                                        onDragEnter={() => onDragEnter(index)}
+                                                        onDragEnd={onDragEnd}
+                                                        onDragOver={onDragOver}
                                                     >
                                                         <div className={styles.content}>
                                                             <CiSettings size={16} className={styles.contentIcon} onClick={() => onSettingsClick(index)} />

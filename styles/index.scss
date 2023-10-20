@@ -8,26 +8,20 @@
   --color-checkmark-completed: #13cB8F;
   --color-in-progress: #13CB8F;
   --color-event: #1e1f22;
-  --color-button-cancel: #f54966;
-  &.dark-mode {
-     --color-checkmark-completed: #fff;
-    --background-modal-color: #5C6174;
-    --color-timeline-default: #9799A3;
-    --color-checkmark-completed: var(--background-modal-color);
-    --body-color: #fff;    
-  }
+  --color-button-cancel: #f54966;  
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: #111;
+  background-color: #fff;
   font-family: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace; 
   margin: 0;
   padding: 0;
+  color: var(--body-color);
 }
 
 body::-webkit-scrollbar {
@@ -35,7 +29,7 @@ body::-webkit-scrollbar {
 }
  
 body::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
 }
  
 body::-webkit-scrollbar-thumb {
